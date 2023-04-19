@@ -1,11 +1,11 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import ShippingForm from "pages/ShippingAddressInfo";
+import ShippingAddressInfo from "pages/ShippingAddressInfo";
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<ShippingForm />} />
+      <Route path="/" element={<ShippingAddressInfo />} />
     </Routes>
   );
 }
