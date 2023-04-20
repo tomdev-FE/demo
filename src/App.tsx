@@ -1,11 +1,21 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import ShippingAddressInfo from "pages/ShippingAddressInfo";
+
+const ShippingAddressInfo = React.lazy(
+  () => import("pages/ShippingAddressInfo")
+);
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<ShippingAddressInfo />} />
+      <Route
+        path="/"
+        element={
+          <React.Suspense fallback={<>Loading...</>}>
+            <ShippingAddressInfo />
+          </React.Suspense>
+        }
+      />
     </Routes>
   );
 }
