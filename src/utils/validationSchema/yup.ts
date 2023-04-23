@@ -16,7 +16,9 @@ export const addressSchema = yup.object().shape({
     .integer("Must be a number")
     .required("Zip code is required"),
   phone: yup
-    .string()
-  // Don't have req about phone number
-    .required("Phone is required"),
+    .number()
+    .typeError("Must be a number")
+    .positive("Must be a positive value")
+    .integer("Must be a number")
+    .required("Phone number is required"),
 });

@@ -6,8 +6,7 @@ import { ShippingMethod } from "types";
 type ShippingMethodsProps = {
   shippingMethods: ShippingMethod[];
   isSubmitSuccessful: boolean;
-  isSubmitting: boolean;
-  flag: boolean;
+  isLoading: boolean;
 };
 
 const ShippingMethods = (props: ShippingMethodsProps) => {
@@ -17,9 +16,7 @@ const ShippingMethods = (props: ShippingMethodsProps) => {
     setSelectedItem(id);
   };
   const conditionShowDataResponse =
-    props?.isSubmitSuccessful === true &&
-    props?.isSubmitting === false &&
-    props?.flag === false;
+    props?.isSubmitSuccessful === true && props?.isLoading === false;
   return (
     <>
       {conditionShowDataResponse ? (

@@ -1,16 +1,19 @@
+import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+
 import Select from "components/Forms/Select";
-import { useState } from "react";
-import { addressSchema } from "utils/validationSchema/yup";
-import { ShippingAddress } from "types";
-import { baseApi } from "utils/baseApi";
 import WrapperComponent from "components/Forms/Wrapper";
 import Button from "components/Forms/Button";
 import Input from "components/Forms/Input";
-import ShippingMethods from "components/ShippingMethods";
-import { ShippingMethod } from "types";
 import CheckBox from "components/Forms/Checkbox";
+import ShippingMethods from "components/ShippingMethods";
+
+import { addressSchema } from "utils/validationSchema/yup";
+import { baseApi } from "utils/baseApi";
+
+import { ShippingAddress, ShippingMethod } from "types";
+import Skeleton from "shared/skeleton";
 
 const defaultValues = {
   country: "US",
@@ -67,7 +70,7 @@ const baseData = {
 
 export default function ShippingAddressInfo() {
   const [shippingMethods, setShippingMethods] = useState<ShippingMethod[]>([]);
-  const [flag, setFlag] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const methods = useForm({
     mode: "onTouched",
@@ -76,34 +79,42 @@ export default function ShippingAddressInfo() {
   });
   const {
     handleSubmit,
-    formState: { isSubmitting, isSubmitSuccessful },
+    formState: { isSubmitSuccessful },
   } = methods;
 
   const onSubmit = async (data: ShippingAddress) => {
-    if (Object.keys(data).length > 0) {
-      const name = data?.first_name + " " + data?.last_name;
-      const addressToData = {
-        name: name,
-        street1: data?.address,
-        city: data?.city,
-        state: data?.state,
-        zip: data?.zip_code,
-        country: data?.country,
-        phone: data?.phone,
-        email: "john@example.com",
-      };
-      const infoReqData = {
-        ...baseData,
-        address_to: addressToData,
-      };
-      baseApi
-        .post("/", infoReqData)
-        .then((response) => setShippingMethods(response?.data?.rates))
-        .then(() => setFlag(false))
-        .catch((errors) => console.log(errors));
+    try {
+      setLoading(true);
+      // add delay because submitting too fast and I want user can see loading state
+      // and I need time delay for setState for complex data response
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      if (Object.keys(data).length > 0) {
+        const name = data?.first_name + " " + data?.last_name;
+        const addressToData = {
+          name: name,
+          street1: data?.address,
+          city: data?.city,
+          state: data?.state,
+          zip: data?.zip_code,
+          country: data?.country,
+          phone: data?.phone,
+          email: "john@example.com",
+        };
+        const infoReqData = {
+          ...baseData,
+          address_to: addressToData,
+        };
+        await baseApi
+          .post("/", infoReqData)
+          .then((response) => setShippingMethods(response?.data?.rates));
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      // stop loading
+      setLoading(false);
     }
   };
-
   return (
     <>
       <main>
@@ -127,7 +138,6 @@ export default function ShippingAddressInfo() {
                   />
                   <Input label="Name" id="last_name" placeholder="Last name" />
                 </WrapperComponent>
-
                 <Input
                   label="Company"
                   id="company"
@@ -150,17 +160,20 @@ export default function ShippingAddressInfo() {
 
                 <Input label="phone" id="phone" placeholder="Phone" />
                 <CheckBox />
-                <Button type="submit" isSubmitting={isSubmitting} flag={flag}>
+                <Button type="submit" isLoading={loading}>
                   Calculate Shipping
                 </Button>
               </form>
             </FormProvider>
-            <ShippingMethods
-              shippingMethods={shippingMethods}
-              isSubmitSuccessful={isSubmitSuccessful}
-              isSubmitting={isSubmitting}
-              flag={flag}
-            />
+            {loading ? (
+              <Skeleton />
+            ) : (
+              <ShippingMethods
+                shippingMethods={shippingMethods}
+                isSubmitSuccessful={isSubmitSuccessful}
+                isLoading={loading}
+              />
+            )}
           </article>
         </section>
       </main>

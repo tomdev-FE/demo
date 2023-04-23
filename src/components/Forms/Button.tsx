@@ -3,22 +3,19 @@ import Spinner from "shared/spinner";
 
 type ButtonProps = {
   children: React.ReactChild | string;
-  isSubmitting: boolean;
-  flag: boolean;
+  isLoading: boolean;
 } & React.ComponentPropsWithoutRef<"button">;
 
 export default function Button({
   children,
-  isSubmitting,
-  flag,
+  isLoading,
   ...rest
 }: ButtonProps) {
-  const disabledCondition = isSubmitting === true && flag === true;
 
   return (
     <div className="flex justify-end">
       <button
-        disabled={disabledCondition}
+        disabled={isLoading}
         {...rest}
         className={clsx(
           "py-5 px-4 rounded font-bold flex justify-end",
@@ -26,7 +23,7 @@ export default function Button({
           "bg-pink-600 text-white"
         )}
       >
-        {disabledCondition ? (
+        {isLoading ? (
           <>
             <Spinner /> Submitting...
           </>
