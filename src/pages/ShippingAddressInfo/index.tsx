@@ -8,7 +8,7 @@ import Button from "components/Forms/Button";
 import Input from "components/Forms/Input";
 import CheckBox from "components/Forms/Checkbox";
 import ShippingMethods from "components/ShippingMethods";
-
+import { MatchComponent } from "components/demo";
 import { addressSchema } from "utils/validationSchema/yup";
 import { baseApi } from "utils/baseApi";
 
@@ -119,6 +119,7 @@ export default function ShippingAddressInfo() {
     <>
       <main>
         <section className="bg-gray-100">
+          <MatchComponent status="success"/>
           <article className="min-h-screen py-16 layout">
             <p className="mt-8 text-lg font-medium">Shipping fefwefwrfrwgaddress</p>
             <FormProvider {...methods}>
