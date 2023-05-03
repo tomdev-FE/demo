@@ -120,7 +120,7 @@ export default function ShippingAddressInfo() {
       <main>
         <section className="bg-gray-100">
           <article className="min-h-screen py-16 layout">
-            <p className="mt-8 text-lg font-medium">Shipping address</p>
+            <p className="mt-8 text-lg font-medium">Shipping fefwefwrfrwgaddress</p>
             <FormProvider {...methods}>
               <form
                 onSubmit={handleSubmit(onSubmit)}
