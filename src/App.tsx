@@ -11,7 +11,7 @@ function App() {
       <Route
         path="/"
         element={
-          <React.Suspense fallback={<>Loading...</>}>
+          <React.Suspense fallback={<>Loadig...</>}>
             <ShippingAddressInfo />
           </React.Suspense>
         }
