@@ -129,7 +129,7 @@ export default function ShippingAddressInfo() {
               >
                 <Select id="country" label="Country/Region">
                   <option value="US">United States</option>
-                  <option value="VI">Vietnam</option>
+                  <option value="VI">Vietnams</option>
                 </Select>
                 <WrapperComponent>
                   <Input
